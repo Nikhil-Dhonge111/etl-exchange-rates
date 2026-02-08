@@ -33,7 +33,7 @@ While building this project, I intentionally faced and solved real-world issues 
 ---
 
 ## 🏗️ High-Level Architecture
-
+```
 Public Exchange Rate API
 |
 v
@@ -50,7 +50,7 @@ Unit Tests (pytest)
 |
 v
 CI Pipeline (GitHub Actions)
-
+```
 
 ---
 
@@ -179,6 +179,7 @@ Outcome
 - Reproducible environments
 
 ## 📂 Project Structure
+```
 etl-exchange-rates/
 │
 ├── ETL_pipeline.py
@@ -190,7 +191,7 @@ etl-exchange-rates/
 └── .github/
     └── workflows/
         └── ci.yml
-        
+```        
 ### ▶️ How to Run Locally
 ```python
 pip install -r requirements.txt
