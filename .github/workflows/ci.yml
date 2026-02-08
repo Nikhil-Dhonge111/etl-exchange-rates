@@ -6,17 +6,19 @@ on:
   pull_request:
     branches: [ "main" ]
   schedule:
-    - cron: "*/5 * * * *"
+    - cron: "*/5 * * * *"   # every 5 minutes (testing)
   workflow_dispatch:
 
 jobs:
-  test:
+  etl:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-      - uses: actions/setup-python@v5
+      - name: Setup Python
+        uses: actions/setup-python@v5
         with:
           python-version: "3.10"
 
@@ -28,13 +30,47 @@ jobs:
       - name: Run tests
         run: pytest -v
 
+      # Run ETL but allow workflow to continue so email can be sent
       - name: Run ETL pipeline
+        id: etl_run
+        continue-on-error: true
         run: |
           python ETL_pipeline.py
-        
+
       - name: Upload SQLite DB
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: exchange-rates-db
           path: exchange_rates.db
 
+      # Email on failure
+      - name: Send failure email
+        if: failure()
+        env:
+          EMAIL_USER: ${{ secrets.EMAIL_USER }}
+          EMAIL_PASS: ${{ secrets.EMAIL_PASS }}
+          EMAIL_TO: ${{ secrets.EMAIL_TO }}
+        run: |
+          python -c "from ETL_pipeline import send_email; send_email(
+            '❌ ETL Pipeline Failed',
+            'The scheduled ETL pipeline failed. Please check GitHub Actions logs.'
+          )"
+
+      # Email on success
+      - name: Send success email
+        if: success()
+        env:
+          EMAIL_USER: ${{ secrets.EMAIL_USER }}
+          EMAIL_PASS: ${{ secrets.EMAIL_PASS }}
+          EMAIL_TO: ${{ secrets.EMAIL_TO }}
+        run: |
+          python -c "from ETL_pipeline import send_email; send_email(
+            '✅ ETL Pipeline Success',
+            'The scheduled ETL pipeline completed successfully.'
+          )"
+
+      # Explicitly fail job if ETL step failed
+      - name: Fail job if ETL failed
+        if: steps.etl_run.outcome == 'failure'
+        run: exit 1
