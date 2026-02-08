@@ -84,6 +84,7 @@ def load(df, conn):
 
 
 def send_email(subject: str, body: str):
+    print("send_email() called")
     required_vars = ["EMAIL_USER", "EMAIL_PASS", "EMAIL_TO"]
 
     # Skip email if env vars not set (local run)
