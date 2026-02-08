@@ -113,7 +113,9 @@ Learning
 SQL cannot be written directly in Python code
 
 Solution
+```
 cursor.execute("SELECT MAX(date) FROM exchange_rates")
+```
 
 ### ❌ Problem 2: Incremental Load Always Skipped
 **Issue**
@@ -155,7 +157,7 @@ Solution
 ### ❌ Problem 5: How to Validate CI Configuration  
 Learning
 - CI cannot be fully tested locally
-- 
+  
 Validation approach:
 - Run tests locally
 - Push code
