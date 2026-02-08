@@ -25,3 +25,40 @@
 2026-02-07 22:12:24,400 | INFO | API response received
 2026-02-07 22:12:24,403 | INFO | Raw data saved: raw_data\exchange_rates_2026-02-07.json
 2026-02-07 22:12:24,403 | INFO | No new data. ETL skipped.
+2026-02-08 10:09:04,165 | INFO | ETL job started
+2026-02-08 10:09:04,180 | INFO | Last loaded date: 2026-02-07
+2026-02-08 10:09:05,101 | INFO | API response received
+2026-02-08 10:09:05,106 | INFO | Raw data saved: raw_data\exchange_rates_2026-02-08.json
+2026-02-08 10:09:05,121 | INFO | Data transformation completed
+2026-02-08 10:09:05,129 | INFO | Data loaded into database
+2026-02-08 10:09:05,129 | INFO | ETL job completed successfully
+2026-02-08 10:40:50,057 | INFO | ETL job started
+2026-02-08 10:40:50,057 | INFO | Last loaded date: 2026-02-08
+2026-02-08 10:40:50,884 | INFO | API response received
+2026-02-08 10:40:50,889 | INFO | Raw data saved: raw_data\exchange_rates_2026-02-08.json
+2026-02-08 10:40:50,889 | INFO | No new data. ETL skipped.
+2026-02-08 10:41:48,403 | INFO | ETL job started
+2026-02-08 10:41:48,405 | INFO | Last loaded date: 2026-02-08
+2026-02-08 10:41:49,251 | INFO | API response received
+2026-02-08 10:41:49,251 | INFO | Raw data saved: raw_data\exchange_rates_2026-02-08.json
+2026-02-08 10:41:49,251 | INFO | No new data. ETL skipped.
+2026-02-08 10:42:02,567 | INFO | ETL job started
+2026-02-08 10:42:02,568 | INFO | Last loaded date: 2026-02-08
+2026-02-08 10:42:03,401 | INFO | API response received
+2026-02-08 10:42:03,403 | INFO | Raw data saved: raw_data\exchange_rates_2026-02-08.json
+2026-02-08 10:42:03,403 | INFO | No new data. ETL skipped.
+2026-02-08 10:42:13,175 | INFO | ETL job started
+2026-02-08 10:42:13,175 | INFO | Last loaded date: 2026-02-08
+2026-02-08 10:42:13,970 | INFO | API response received
+2026-02-08 10:42:13,980 | INFO | Raw data saved: raw_data\exchange_rates_2026-02-08.json
+2026-02-08 10:42:13,980 | INFO | No new data. ETL skipped.
+2026-02-08 10:45:23,301 | INFO | ETL job started
+2026-02-08 10:45:23,301 | INFO | Last loaded date: 2026-02-08
+2026-02-08 10:45:24,115 | INFO | API response received
+2026-02-08 10:45:24,131 | INFO | Raw data saved: raw_data\exchange_rates_2026-02-08.json
+2026-02-08 10:45:24,131 | INFO | No new data. ETL skipped.
+2026-02-08 10:46:07,928 | INFO | ETL job started
+2026-02-08 10:46:07,937 | INFO | Last loaded date: 2026-02-08
+2026-02-08 10:46:08,714 | INFO | API response received
+2026-02-08 10:46:08,714 | INFO | Raw data saved: raw_data\exchange_rates_2026-02-08.json
+2026-02-08 10:46:08,714 | INFO | No new data. ETL skipped.

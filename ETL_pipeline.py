@@ -5,6 +5,16 @@ import logging
 import json
 from pathlib import Path
 from datetime import datetime
+# used for the automated run ad email alerts
+import os
+import smtplib
+from email.message import EmailMessage
+import traceback
+
+# os → read GitHub Secrets
+# smtplib → send email
+# EmailMessage → clean email formatting
+# traceback → useful error details in failure emai
 
 DB_NAME = "exchange_rates.db"
 TABLE_NAME = "exchange_rates"
@@ -73,6 +83,28 @@ def load(df, conn):
         logging.warning("Duplicate records detected. Load skipped.")
 
 
+def send_email(subject: str, body: str):
+    required_vars = ["EMAIL_USER", "EMAIL_PASS", "EMAIL_TO"]
+
+    # Skip email if env vars not set (local run)
+    if not all(var in os.environ for var in required_vars):
+        print("Email credentials not found. Skipping email notification.")
+        return
+
+    msg = EmailMessage()
+    msg["From"] = os.environ["EMAIL_USER"]
+    msg["To"] = os.environ["EMAIL_TO"]
+    msg["Subject"] = subject
+    msg.set_content(body)
+
+    with smtplib.SMTP_SSL("smtp.gmail.com", 465) as smtp:
+        smtp.login(
+            os.environ["EMAIL_USER"],
+            os.environ["EMAIL_PASS"]
+        )
+        smtp.send_message(msg)
+
+
 def main():
     logging.info("ETL job started")
 
@@ -119,4 +151,20 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+
+        send_email(
+            subject="✅ ETL Pipeline Success",
+            body="Exchange Rates ETL pipeline completed successfully."
+        )
+
+    except Exception:
+        error_details = traceback.format_exc()
+
+        send_email(
+            subject="❌ ETL Pipeline Failed",
+            body=f"ETL pipeline failed:\n\n{error_details}"
+        )
+
+        raise
