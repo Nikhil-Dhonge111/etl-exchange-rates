@@ -35,20 +35,15 @@ While building this project, I intentionally faced and solved real-world issues 
 ## 🏗️ High-Level Architecture
 ```
 Public Exchange Rate API
-|
-v
+    ⬇️
 Extract (requests)
-|
-v
+    ⬇️
 Transform (pandas + validations)
-|
-v
+    ⬇️
 Load (SQLite)
-|
-v
+    ⬇️
 Unit Tests (pytest)
-|
-v
+    ⬇️
 CI Pipeline (GitHub Actions)
 ```
 
