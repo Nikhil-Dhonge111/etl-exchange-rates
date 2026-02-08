@@ -112,9 +112,9 @@ Branch protection ensures:
 **Issue**
 ```python
 SELECT max(date) FROM exchange_rates
+```
 
 Learning
-
 SQL cannot be written directly in Python code
 
 Solution
@@ -156,3 +156,51 @@ Learning
 Solution
 - Renamed modules
 - Used explicit imports and clean project structure
+
+### ❌ Problem 5: How to Validate CI Configuration  
+Learning
+- CI cannot be fully tested locally
+- 
+Validation approach:
+- Run tests locally
+- Push code
+- Debug using GitHub Actions logs
+
+Outcome
+- CI failures became easier to debug than local ones
+
+## 🧠 Key Engineering Concepts Demonstrated
+- Incremental data loading
+- Data quality validation
+- API mocking
+- Unit testing
+- CI/CD pipelines
+- Branch protection rules
+- Reproducible environments
+
+## 📂 Project Structure
+etl-exchange-rates/
+│
+├── ETL_pipeline.py
+├── requirements.txt
+├── tests/
+│   ├── test_extract.py
+│   └── test_transform.py
+│
+└── .github/
+    └── workflows/
+        └── ci.yml
+        
+###▶️ How to Run Locally
+```python
+pip install -r requirements.txt
+python ETL_pipeline.py
+pytest -v
+```
+
+###📈 Future Enhancements
+- Replace SQLite with PostgreSQL / Azure SQL
+- Add structured logging
+- Add retry and alerting logic
+- Orchestrate with Airflow or Azure Data Factory
+- Containerize with Docker
