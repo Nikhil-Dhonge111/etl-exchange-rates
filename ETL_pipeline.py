@@ -108,64 +108,70 @@ def send_email(subject: str, body: str):
 
 def main():
     logging.info("ETL job started")
+    conn = None
 
-    conn = sqlite3.connect(DB_NAME)
-
-    # Create table
-    conn.execute(
-        f"""
-        CREATE TABLE IF NOT EXISTS {TABLE_NAME} (
-            currency TEXT,
-            rate REAL,
-            base_currency TEXT,
-            date TEXT,
-            ingested_at TEXT
-        )
-        """
-    )
-
-    # Enforce idempotency
-    conn.execute(
-        f"""
-        CREATE UNIQUE INDEX IF NOT EXISTS idx_currency_date
-        ON {TABLE_NAME}(currency, date)
-        """
-    )
-
-    last_date = get_last_loaded_date(conn)
-
-    data = extract()
-    save_raw_data(data)
-
-    if data["date"] == last_date:
-        logging.info("No new data. ETL skipped.")
-        conn.close()
-        return
-
-    df = transform(data)
-    load(df, conn)
-
-    conn.commit()
-    conn.close()
-
-    logging.info("ETL job completed successfully")
-
-
-if __name__ == "__main__":
     try:
-        main()
+        conn = sqlite3.connect(DB_NAME)
 
-        send_email(
-            subject="✅ ETL Pipeline Success",
-            body="Exchange Rates ETL pipeline completed successfully."
+        # Create table
+        conn.execute(
+            f"""
+            CREATE TABLE IF NOT EXISTS {TABLE_NAME} (
+                currency TEXT,
+                rate REAL,
+                base_currency TEXT,
+                date TEXT,
+                ingested_at TEXT
+            )
+            """
         )
 
-    except Exception:
-        error_details = traceback.format_exc()
+        # Enforce idempotency
+        conn.execute(
+            f"""
+            CREATE UNIQUE INDEX IF NOT EXISTS idx_currency_date
+            ON {TABLE_NAME}(currency, date)
+            """
+        )
+
+        last_date = get_last_loaded_date(conn)
+
+        data = extract()
+        save_raw_data(data)
+
+        if data["date"] == last_date:
+            logging.info("No new data. ETL skipped.")
+            return
+
+        df = transform(data)
+        load(df, conn)
+
+        conn.commit()
+        logging.info("ETL job completed successfully")
+
+    except Exception as e:
+        logging.exception("ETL pipeline failed")
 
         send_email(
             subject="❌ ETL Pipeline Failed",
-            body=f"ETL pipeline failed:\n\n{error_details}"
+            body=f"""
+ETL pipeline failed.
+
+Error:
+{str(e)}
+
+Check GitHub Actions logs for full details.
+"""
         )
 
-        raise
+        raise  # IMPORTANT: CI must fail
+
+    finally:
+        if conn:
+            conn.close()
+
+
+
+if __name__ == "__main__":
+    main()
+
