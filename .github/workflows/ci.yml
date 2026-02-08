@@ -31,3 +31,10 @@ jobs:
       - name: Run ETL pipeline
         run: |
           python ETL_pipeline.py
+        
+      - name: Upload SQLite DB
+        uses: actions/upload-artifact@v4
+        with:
+          name: exchange-rates-db
+          path: exchange_rates.db
+
