@@ -191,14 +191,14 @@ etl-exchange-rates/
     └── workflows/
         └── ci.yml
         
-###▶️ How to Run Locally
+### ▶️ How to Run Locally
 ```python
 pip install -r requirements.txt
 python ETL_pipeline.py
 pytest -v
 ```
 
-###📈 Future Enhancements
+### 📈 Future Enhancements
 - Replace SQLite with PostgreSQL / Azure SQL
 - Add structured logging
 - Add retry and alerting logic
