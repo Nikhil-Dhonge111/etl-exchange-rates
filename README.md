@@ -195,7 +195,44 @@ pip install -r requirements.txt
 python ETL_pipeline.py
 pytest -v
 ```
+### 📦 Data Persistence & Consumption
+Why Data Is Not Visible After Scheduled Runs
+- This pipeline is executed using GitHub Actions, which runs jobs on ephemeral runners.
 
+Key behavior:
+- Each run executes on a fresh virtual machine
+- Any locally created files (SQLite DB, CSVs, raw data) exist only during the run
+- After the job finishes, the runner is destroyed
+- Therefore, the SQLite database is not persisted automatically
+- This behavior is expected and mirrors real production CI environments.
+
+How Data Is Persisted for Validation
+- To inspect and validate the generated data during development, the SQLite database is uploaded as a GitHub Actions artifact.
+
+This allows:
+- Downloading the database after each run
+- Verifying tables and records locally
+- Debugging incremental loads and data quality issues
+
+This approach is used only for learning and validation.
+In production systems, data would be written to an external persistent store such as:
+- PostgreSQL / Azure SQL
+- Cloud object storage (Azure Blob / S3)
+
+How the Data Can Be Used
+- Once persisted in an external database, the processed exchange rate data can be consumed by downstream applications, such as:
+- Analytical dashboards
+    - Streamlit dashboards
+    - Power BI / Tableau
+    - Metabase
+- APIs
+    - Exposing exchange rates via REST endpoints
+    - Powering internal or external applications
+- Reporting systems
+    - Scheduled market insight reports
+    - Trend analysis and historical comparisons
+
+This separation of data ingestion and data consumption reflects standard data engineering architecture.
 ### 📈 Future Enhancements
 - Replace SQLite with PostgreSQL / Azure SQL
 - Add structured logging
